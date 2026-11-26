@@ -1,0 +1,30 @@
+meta {
+  name: Get Aggregated Measurements With Incorrect API Key
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/measurements?appid={{$randomUUID}}&station_id=000000000000000000000000&type=m&limit=100&from=0&to=4102444800
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{$randomUUID}}
+  station_id: 000000000000000000000000
+  type: m
+  limit: 100
+  from: 0
+  to: 4102444800
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

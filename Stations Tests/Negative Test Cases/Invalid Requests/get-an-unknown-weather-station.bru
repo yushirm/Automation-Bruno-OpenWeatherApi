@@ -1,0 +1,25 @@
+meta {
+  name: Get an Unknown Weather Station
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/stations/000000000000000000000000?appid={{APIKey}}
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+tests {
+  test("Status code is 404", function () {
+    expect(res.status).to.equal(404);
+  });
+
+  test("Body has an error message", function () {
+    expect(res.body.message).to.be.a("string").and.not.be.empty;
+  });
+}

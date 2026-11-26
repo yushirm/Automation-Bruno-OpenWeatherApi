@@ -1,0 +1,36 @@
+meta {
+  name: Send a Measurement Without API Key
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/measurements
+  body: json
+  auth: none
+}
+
+body:json {
+  [
+    {
+      "station_id": "000000000000000000000000",
+      "dt": {{$timestamp}},
+      "temperature": 18.7,
+      "wind_speed": 1.2,
+      "wind_gust": 3.4,
+      "pressure": 1021,
+      "humidity": 87,
+      "rain_1h": 2
+    }
+  ]
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

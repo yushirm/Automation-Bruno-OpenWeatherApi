@@ -1,0 +1,25 @@
+meta {
+  name: Get Weather Station Info
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/stations/{{station_id}}?appid={{APIKey}}
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+tests {
+  test("Status code is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Station ID matches the registered station", function () {
+    expect(res.body.id).to.equal(bru.getEnvVar("station_id"));
+  });
+}

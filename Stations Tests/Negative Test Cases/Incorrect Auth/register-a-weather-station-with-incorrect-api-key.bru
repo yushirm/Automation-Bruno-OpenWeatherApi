@@ -1,0 +1,35 @@
+meta {
+  name: Register a Weather Station With Incorrect API Key
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/stations?appid={{$randomUUID}}
+  body: json
+  auth: none
+}
+
+params:query {
+  appid: {{$randomUUID}}
+}
+
+body:json {
+  {
+    "external_id": "{{$randomUUID}}",
+    "name": "{{$randomCity}} Test Station",
+    "latitude": {{$randomLatitude}},
+    "longitude": {{$randomLongitude}},
+    "altitude": {{$randomInt}}
+  }
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

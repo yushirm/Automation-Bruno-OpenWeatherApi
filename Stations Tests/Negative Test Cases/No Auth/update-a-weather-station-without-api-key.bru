@@ -1,0 +1,31 @@
+meta {
+  name: Update a Weather Station Without API Key
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{url}}/stations/000000000000000000000000
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "external_id": "{{$randomUUID}}",
+    "name": "{{$randomCity}} Test Station",
+    "latitude": {{$randomLatitude}},
+    "longitude": {{$randomLongitude}},
+    "altitude": {{$randomInt}}
+  }
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

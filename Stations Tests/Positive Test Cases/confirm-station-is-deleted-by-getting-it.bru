@@ -1,0 +1,25 @@
+meta {
+  name: Confirm Station Is Deleted by Getting It
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{url}}/stations/{{station_id}}?appid={{APIKey}}
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+tests {
+  test("Status code is 404", function () {
+    expect(res.status).to.equal(404);
+  });
+
+  test("Body contains Station not found", function () {
+    expect(JSON.stringify(res.body)).to.include("Station not found");
+  });
+}

@@ -1,0 +1,32 @@
+meta {
+  name: List Weather Stations
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/stations?appid={{APIKey}}
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+tests {
+  test("Status code is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Body is a list of stations", function () {
+    expect(res.body).to.be.an("array");
+  });
+
+  test("List contains the registered station", function () {
+    const listedStationIds = res.body.map(function (station) {
+      return station.id;
+    });
+    expect(listedStationIds).to.include(bru.getEnvVar("station_id"));
+  });
+}

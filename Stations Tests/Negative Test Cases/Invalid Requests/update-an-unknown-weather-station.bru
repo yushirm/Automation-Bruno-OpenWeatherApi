@@ -1,0 +1,35 @@
+meta {
+  name: Update an Unknown Weather Station
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{url}}/stations/000000000000000000000000?appid={{APIKey}}
+  body: json
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+body:json {
+  {
+    "external_id": "{{$randomUUID}}",
+    "name": "{{$randomCity}} Test Station",
+    "latitude": {{$randomLatitude}},
+    "longitude": {{$randomLongitude}},
+    "altitude": {{$randomInt}}
+  }
+}
+
+tests {
+  test("Status code is 404", function () {
+    expect(res.status).to.equal(404);
+  });
+
+  test("Body has an error message", function () {
+    expect(res.body.message).to.be.a("string").and.not.be.empty;
+  });
+}

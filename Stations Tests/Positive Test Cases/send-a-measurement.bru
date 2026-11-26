@@ -1,0 +1,40 @@
+meta {
+  name: Send a Measurement
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{url}}/measurements?appid={{APIKey}}
+  body: json
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+body:json {
+  [
+    {
+      "station_id": "{{station_id}}",
+      "dt": {{$timestamp}},
+      "temperature": 18.7,
+      "wind_speed": 1.2,
+      "wind_gust": 3.4,
+      "pressure": 1021,
+      "humidity": 87,
+      "rain_1h": 2
+    }
+  ]
+}
+
+tests {
+  test("Status code is 204", function () {
+    expect(res.status).to.equal(204);
+  });
+
+  test("Body is empty", function () {
+    expect(res.body).to.be.oneOf(["", null, undefined]);
+  });
+}
