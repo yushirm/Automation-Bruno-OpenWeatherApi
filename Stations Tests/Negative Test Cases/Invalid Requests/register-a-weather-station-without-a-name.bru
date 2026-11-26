@@ -1,0 +1,38 @@
+meta {
+  name: Register a Weather Station Without a Name
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{url}}/stations?appid={{APIKey}}
+  body: json
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "external_id": "{{$randomUUID}}",
+    "latitude": {{$randomLatitude}},
+    "longitude": {{$randomLongitude}},
+    "altitude": {{$randomInt}}
+  }
+}
+
+tests {
+  test("Status code is 400", function () {
+    expect(res.status).to.equal(400);
+  });
+
+  test("Body contains message", function () {
+    expect(JSON.stringify(res.body)).to.include("message");
+  });
+}

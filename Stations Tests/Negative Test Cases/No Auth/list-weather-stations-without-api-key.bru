@@ -1,0 +1,25 @@
+meta {
+  name: List Weather Stations Without API Key
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{url}}/stations
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

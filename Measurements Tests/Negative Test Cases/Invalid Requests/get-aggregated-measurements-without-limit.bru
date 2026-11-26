@@ -1,0 +1,33 @@
+meta {
+  name: Get Aggregated Measurements Without Limit
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/measurements?appid={{APIKey}}&station_id={{station_id}}&type=m&from=0&to=4102444800
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+  station_id: {{station_id}}
+  type: m
+  from: 0
+  to: 4102444800
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status code is 400", function () {
+    expect(res.status).to.equal(400);
+  });
+
+  test("Body contains message", function () {
+    expect(JSON.stringify(res.body)).to.include("message");
+  });
+}

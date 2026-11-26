@@ -41,4 +41,18 @@ tests {
   test("Body contains updated_at", function () {
     expect(JSON.stringify(res.body)).to.include("updated_at");
   });
+
+  test("Station ID is a non-empty string", function () {
+    expect(res.body.ID).to.be.a("string").and.not.be.empty;
+  });
+
+  test("Station name ends with Test Station", function () {
+    expect(res.body.name).to.match(/ Test Station$/);
+  });
+
+  test("Coordinates and altitude are numbers", function () {
+    expect(res.body.latitude).to.be.a("number");
+    expect(res.body.longitude).to.be.a("number");
+    expect(res.body.altitude).to.be.a("number");
+  });
 }

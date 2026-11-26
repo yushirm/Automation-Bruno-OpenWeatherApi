@@ -1,7 +1,7 @@
 meta {
   name: Update a Weather Station
   type: http
-  seq: 3
+  seq: 4
 }
 
 put {
@@ -37,5 +37,9 @@ tests {
     const initialStationName = bru.getEnvVar("initial_station_name");
     const updatedStationName = bru.getEnvVar("updated_station_name");
     expect(updatedStationName).to.not.eql(initialStationName);
+  });
+
+  test("Updated station name ends with Test Station", function () {
+    expect(res.body.name).to.match(/ Test Station$/);
   });
 }
