@@ -1,0 +1,52 @@
+name: API tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Two runs at once are fine, but cancelling one mid-run could leave a test station behind.
+concurrency:
+  group: api-tests-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BRUNO_CLI: "@usebruno/cli@4.4.0"
+      # Empty on pull requests from forks, which GitHub never gives secrets to.
+      OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run the tests that need no API key
+        run: |
+          for folder in \
+            "Stations Tests/Negative Test Cases/No Auth" \
+            "Stations Tests/Negative Test Cases/Incorrect Auth" \
+            "Measurements Tests/Negative Test Cases/No Auth" \
+            "Measurements Tests/Negative Test Cases/Incorrect Auth"; do
+            npx --yes "$BRUNO_CLI" run "$folder" --env OpenWeatherApi
+          done
+
+      # Creates and deletes a real station on the account that owns the key.
+      - name: Run the full collection
+        if: env.OPENWEATHER_API_KEY != ''
+        run: npx --yes "$BRUNO_CLI" run --env OpenWeatherApi --reporter-junit results.xml
+
+      - name: Upload test results
+        if: always() && hashFiles('results.xml') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: bruno-results
+          path: results.xml
