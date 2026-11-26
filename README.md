@@ -46,10 +46,14 @@ The `No Auth` and `Incorrect Auth` folders need no key:
 bru run "Stations Tests/Negative Test Cases/No Auth" --env OpenWeatherApi
 ```
 
+## Continuous integration
+
+`.github/workflows/api-tests.yml` runs on every pull request, every push to `main` and on demand. When the `OPENWEATHER_API_KEY` repository secret is available it runs the full collection, otherwise only the folders that need no key. The full run creates and deletes a real station on the account that owns the key. Pull requests from forks never get the secret, so they run only the keyless folders. Open a run on the Actions tab to see a results table on its summary page, with failed tests listed first and marked as annotations. The full run also uploads a `bruno-report` artifact with Bruno's HTML report. The JSON report is never uploaded, because it contains request URLs and so your API key.
+
 ## Future work
 
 - Confirm that a measurement you send comes back from the aggregated measurements endpoint. In testing the endpoint returned an empty list for 90 seconds after a 204, so the test only checks the status and that the body is a list.
-- Add a CI workflow and require it in the `main` branch ruleset.
+- Require the `API tests` check in the `main` branch ruleset, now that the workflow has run once.
 - Boundary tests (latitude and longitude range, name length, duplicate `external_id`). The API docs do not state the limits, so they are not guessed here.
 
 ## Tools used
