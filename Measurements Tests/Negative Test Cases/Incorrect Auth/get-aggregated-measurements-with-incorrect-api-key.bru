@@ -5,22 +5,18 @@ meta {
 }
 
 get {
-  url: {{url}}/measurements?appid={{$randomUUID}}&station_id={{station_id}}&type=m&limit=100&from=0&to=4102444800
+  url: {{url}}/measurements?appid={{$randomUUID}}&station_id=000000000000000000000000&type=m&limit=100&from=0&to=4102444800
   body: none
   auth: none
 }
 
 params:query {
   appid: {{$randomUUID}}
-  station_id: {{station_id}}
+  station_id: 000000000000000000000000
   type: m
   limit: 100
   from: 0
   to: 4102444800
-}
-
-headers {
-  Content-Type: application/json
 }
 
 tests {

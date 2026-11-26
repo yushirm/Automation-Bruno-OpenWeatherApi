@@ -14,10 +14,6 @@ params:query {
   appid: {{APIKey}}
 }
 
-headers {
-  Content-Type: application/json
-}
-
 body:json {
   {
     "external_id": "{{$randomUUID}}",
@@ -33,7 +29,7 @@ tests {
     expect(res.status).to.equal(404);
   });
 
-  test("Body contains message", function () {
-    expect(JSON.stringify(res.body)).to.include("message");
+  test("Body has an error message", function () {
+    expect(res.body.message).to.be.a("string").and.not.be.empty;
   });
 }

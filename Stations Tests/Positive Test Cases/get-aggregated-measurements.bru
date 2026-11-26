@@ -19,8 +19,9 @@ params:query {
   to: 4102444800
 }
 
-headers {
-  Content-Type: application/json
+script:pre-request {
+  // The aggregate can lag behind the measurement sent just before.
+  await bru.sleep(2000);
 }
 
 tests {
@@ -30,5 +31,9 @@ tests {
 
   test("Body is a list of measurements", function () {
     expect(res.body).to.be.an("array");
+  });
+
+  test("List contains the measurement that was sent", function () {
+    expect(res.body).to.have.length.above(0);
   });
 }

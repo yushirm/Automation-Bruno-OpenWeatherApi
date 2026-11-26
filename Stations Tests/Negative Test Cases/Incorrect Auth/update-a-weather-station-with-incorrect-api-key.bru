@@ -5,17 +5,13 @@ meta {
 }
 
 put {
-  url: {{url}}/stations/{{station_id}}?appid={{$randomUUID}}
+  url: {{url}}/stations/000000000000000000000000?appid={{$randomUUID}}
   body: json
   auth: none
 }
 
 params:query {
   appid: {{$randomUUID}}
-}
-
-headers {
-  Content-Type: application/json
 }
 
 body:json {

@@ -24,27 +24,20 @@ Measurements Tests/
 
 ## Getting started
 
-1. Install [Bruno](https://www.usebruno.com/downloads), or the CLI: `npm install -g @usebruno/cli`.
+1. Install [Bruno](https://www.usebruno.com/downloads) 2.x or newer, or the CLI: `npm install -g @usebruno/cli`. Older versions do not resolve the `{{$random...}}` dynamic variables.
 2. Clone this repository.
 3. In Bruno choose **Open Collection** and select the cloned folder.
 4. Pick the **OpenWeatherApi** environment (top right).
-5. Get an API key by [registering](https://openweathermap.org/appid#signup), then paste it into the `APIKey` variable of the environment. Bruno keeps secret values on your machine only, so the key is never committed.
+5. Get an API key by [registering](https://openweathermap.org/appid#signup), then copy `.env.example` to `.env` and paste the key after `OPENWEATHER_API_KEY=`. Bruno reads `.env` from the collection root, and git ignores it, so the key is never committed.
 
 ## Running the tests
 
 In the app: right-click the collection and choose **Run**.
 
-From the command line, keep your key in a `.env` file (ignored by git, see `.env.example`):
+From the command line, run everything from the collection folder. The CLI reads the same `.env` file:
 
 ```bash
-cp .env.example .env
-```
-
-Then run everything:
-
-```bash
-set -a; . ./.env; set +a
-bru run --env OpenWeatherApi --env-var APIKey="$OPENWEATHER_API_KEY"
+bru run --env OpenWeatherApi
 ```
 
 The `No Auth` and `Incorrect Auth` folders need no key:

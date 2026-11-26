@@ -10,14 +10,10 @@ post {
   auth: none
 }
 
-headers {
-  Content-Type: application/json
-}
-
 body:json {
   [
     {
-      "station_id": "{{station_id}}",
+      "station_id": "000000000000000000000000",
       "dt": {{$timestamp}},
       "temperature": 18.7,
       "wind_speed": 1.2,

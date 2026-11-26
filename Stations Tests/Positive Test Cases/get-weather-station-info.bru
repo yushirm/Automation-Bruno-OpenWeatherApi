@@ -14,10 +14,6 @@ params:query {
   appid: {{APIKey}}
 }
 
-headers {
-  Content-Type: application/json
-}
-
 tests {
   test("Status code is 200", function () {
     expect(res.status).to.equal(200);

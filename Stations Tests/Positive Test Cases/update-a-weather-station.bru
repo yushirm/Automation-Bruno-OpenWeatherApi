@@ -14,29 +14,23 @@ params:query {
   appid: {{APIKey}}
 }
 
-headers {
-  Content-Type: application/json
-}
-
 body:json {
   {
     "external_id": "{{$randomUUID}}",
-    "name": "{{$randomCity}} Test Station",
+    "name": "{{$randomCity}} Updated Test Station",
     "latitude": {{$randomLatitude}},
     "longitude": {{$randomLongitude}},
     "altitude": {{$randomInt}}
   }
 }
 
-script:post-response {
-  bru.setEnvVar("updated_station_name", res.body.name);
-}
-
 tests {
+  test("Status code is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
   test("Station name was changed", function () {
-    const initialStationName = bru.getEnvVar("initial_station_name");
-    const updatedStationName = bru.getEnvVar("updated_station_name");
-    expect(updatedStationName).to.not.eql(initialStationName);
+    expect(res.body.name).to.not.eql(bru.getEnvVar("initial_station_name"));
   });
 
   test("Updated station name ends with Test Station", function () {

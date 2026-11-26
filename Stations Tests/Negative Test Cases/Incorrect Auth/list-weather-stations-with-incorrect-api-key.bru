@@ -14,10 +14,6 @@ params:query {
   appid: {{$randomUUID}}
 }
 
-headers {
-  Content-Type: application/json
-}
-
 tests {
   test("Status code is 401", function () {
     expect(res.status).to.equal(401);

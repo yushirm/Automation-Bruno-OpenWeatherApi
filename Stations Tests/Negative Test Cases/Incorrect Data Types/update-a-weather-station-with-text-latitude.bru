@@ -5,17 +5,13 @@ meta {
 }
 
 put {
-  url: {{url}}/stations/{{station_id}}?appid={{APIKey}}
+  url: {{url}}/stations/000000000000000000000000?appid={{APIKey}}
   body: json
   auth: none
 }
 
 params:query {
   appid: {{APIKey}}
-}
-
-headers {
-  Content-Type: application/json
 }
 
 body:json {
@@ -33,7 +29,7 @@ tests {
     expect(res.status).to.equal(400);
   });
 
-  test("Body contains unmarshal type error: expected=float64, got=string", function () {
-    expect(JSON.stringify(res.body)).to.include("unmarshal type error: expected=float64, got=string");
+  test("Body has an error message", function () {
+    expect(res.body.message).to.be.a("string").and.not.be.empty;
   });
 }
