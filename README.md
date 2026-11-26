@@ -48,7 +48,7 @@ bru run "Stations Tests/Negative Test Cases/No Auth" --env OpenWeatherApi
 
 ## Continuous integration
 
-`.github/workflows/api-tests.yml` runs on every pull request, every push to `main` and on demand. It always runs the folders that need no key. When the `OPENWEATHER_API_KEY` repository secret is available, it also runs the full collection, which creates and deletes a real station on the account that owns the key. Pull requests from forks never get the secret, so they run only the keyless folders. Results are uploaded as a `bruno-results` artifact.
+`.github/workflows/api-tests.yml` runs on every pull request, every push to `main` and on demand. When the `OPENWEATHER_API_KEY` repository secret is available it runs the full collection, otherwise only the folders that need no key. The full run creates and deletes a real station on the account that owns the key. Pull requests from forks never get the secret, so they run only the keyless folders. Open a run on the Actions tab to see a results table on its summary page, with failed tests listed first and marked as annotations. The full run also uploads a `bruno-report` artifact with Bruno's HTML report. The JSON report is never uploaded, because it contains request URLs and so your API key.
 
 ## Future work
 

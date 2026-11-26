@@ -30,23 +30,43 @@ jobs:
           node-version: 22
 
       - name: Run the tests that need no API key
+        if: env.OPENWEATHER_API_KEY == ''
         run: |
+          mkdir -p "$RUNNER_TEMP/reports"
+          report_number=0
+          exit_code=0
           for folder in \
             "Stations Tests/Negative Test Cases/No Auth" \
             "Stations Tests/Negative Test Cases/Incorrect Auth" \
             "Measurements Tests/Negative Test Cases/No Auth" \
             "Measurements Tests/Negative Test Cases/Incorrect Auth"; do
-            npx --yes "$BRUNO_CLI" run "$folder" --env OpenWeatherApi
+            report_number=$((report_number + 1))
+            npx --yes "$BRUNO_CLI" run "$folder" --env OpenWeatherApi \
+              --reporter-json "$RUNNER_TEMP/reports/keyless-$report_number.json" || exit_code=$?
           done
+          exit "$exit_code"
 
       # Creates and deletes a real station on the account that owns the key.
       - name: Run the full collection
         if: env.OPENWEATHER_API_KEY != ''
-        run: npx --yes "$BRUNO_CLI" run --env OpenWeatherApi --reporter-junit results.xml
+        run: |
+          mkdir -p "$RUNNER_TEMP/reports"
+          npx --yes "$BRUNO_CLI" run --env OpenWeatherApi \
+            --reporter-json "$RUNNER_TEMP/reports/full.json" \
+            --reporter-html results.html
 
-      - name: Upload test results
-        if: always() && hashFiles('results.xml') != ''
+      # Shows the results on the run page and marks failed tests as annotations.
+      # Bruno's JSON report holds request URLs with the API key, so it is never uploaded.
+      - name: Write the results summary
+        if: always()
+        run: |
+          if compgen -G "$RUNNER_TEMP/reports/*.json" > /dev/null; then
+            node .github/scripts/write-job-summary.js "$RUNNER_TEMP"/reports/*.json
+          fi
+
+      - name: Upload the HTML report
+        if: always() && hashFiles('results.html') != ''
         uses: actions/upload-artifact@v4
         with:
-          name: bruno-results
-          path: results.xml
+          name: bruno-report
+          path: results.html
