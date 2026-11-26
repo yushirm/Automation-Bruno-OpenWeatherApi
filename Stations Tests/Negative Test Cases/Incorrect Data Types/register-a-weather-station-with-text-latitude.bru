@@ -1,0 +1,39 @@
+meta {
+  name: Register a Weather Station With Text Latitude
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/stations?appid={{APIKey}}
+  body: json
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "external_id": "{{$randomUUID}}",
+    "name": "{{$randomCity}} Test Station",
+    "latitude": "{{$randomWord}}",
+    "longitude": {{$randomLongitude}},
+    "altitude": {{$randomInt}}
+  }
+}
+
+tests {
+  test("Status code is 400", function () {
+    expect(res.status).to.equal(400);
+  });
+
+  test("Body contains unmarshal type error: expected=float64, got=string", function () {
+    expect(JSON.stringify(res.body)).to.include("unmarshal type error: expected=float64, got=string");
+  });
+}

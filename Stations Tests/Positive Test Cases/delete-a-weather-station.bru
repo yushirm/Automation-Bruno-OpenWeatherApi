@@ -1,0 +1,29 @@
+meta {
+  name: Delete a Weather Station
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{url}}/stations/{{station_id}}?appid={{APIKey}}
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status code is 204", function () {
+    expect(res.status).to.equal(204);
+  });
+
+  test("Body is empty", function () {
+    expect(res.body).to.be.oneOf(["", null, undefined]);
+  });
+}

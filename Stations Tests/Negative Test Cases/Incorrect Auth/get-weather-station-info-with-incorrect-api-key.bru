@@ -1,0 +1,29 @@
+meta {
+  name: Get Weather Station Info With Incorrect API Key
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/stations/{{station_id}}?appid={{$randomUUID}}
+  body: none
+  auth: none
+}
+
+params:query {
+  appid: {{$randomUUID}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

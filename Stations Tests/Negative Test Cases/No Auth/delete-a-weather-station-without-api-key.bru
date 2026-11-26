@@ -1,0 +1,25 @@
+meta {
+  name: Delete a Weather Station Without API Key
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{url}}/stations/{{station_id}}
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+tests {
+  test("Status code is 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("Body contains Invalid API key", function () {
+    expect(JSON.stringify(res.body)).to.include("Invalid API key");
+  });
+}

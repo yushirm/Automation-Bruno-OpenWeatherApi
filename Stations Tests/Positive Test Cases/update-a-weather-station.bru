@@ -1,0 +1,41 @@
+meta {
+  name: Update a Weather Station
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{url}}/stations/{{station_id}}?appid={{APIKey}}
+  body: json
+  auth: none
+}
+
+params:query {
+  appid: {{APIKey}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "external_id": "{{$randomUUID}}",
+    "name": "{{$randomCity}} Test Station",
+    "latitude": {{$randomLatitude}},
+    "longitude": {{$randomLongitude}},
+    "altitude": {{$randomInt}}
+  }
+}
+
+script:post-response {
+  bru.setEnvVar("updated_station_name", res.body.name);
+}
+
+tests {
+  test("Station name was changed", function () {
+    const initialStationName = bru.getEnvVar("initial_station_name");
+    const updatedStationName = bru.getEnvVar("updated_station_name");
+    expect(updatedStationName).to.not.eql(initialStationName);
+  });
+}
