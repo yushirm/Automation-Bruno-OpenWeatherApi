@@ -2,6 +2,8 @@
 
 A test automation project using [Bruno](https://www.usebruno.com/) that targets the [Open Weather Map Weather Stations API](https://openweathermap.org/stations). It is a port of [Automation-Postman-OpenWeatherApi](https://github.com/yushirm/Automation-Postman-OpenWeatherApi), with extra tests for the gaps the Postman suite left.
 
+Ported from my Postman suite using Claude Code, with the extra coverage added at my direction.
+
 ## Test design approach
 
 Positive tests follow normal use: register, get, list, update, send measurements, get measurements and delete a station. Negative tests cover missing or incorrect API keys, wrong data types, malformed JSON, missing required fields and unknown station IDs.
@@ -59,6 +61,7 @@ bru run "Stations Tests/Negative Test Cases/No Auth" --env OpenWeatherApi
 ## Tools used
 
 - [Bruno](https://www.usebruno.com/)
+- [Claude Code](https://claude.com/claude-code)
 
 ## License
 
@@ -66,4 +69,5 @@ MIT, see [LICENSE](LICENSE).
 
 ## Authors
 
-- [yushirm](https://www.linkedin.com/in/yushir-rugnath-maharaj-44b86222/) - Initial design and coding
+- [yushirm](https://www.linkedin.com/in/yushir-rugnath-maharaj-44b86222/) - Design and direction
+- [Claude Code](https://claude.com/claude-code) - Implementation
