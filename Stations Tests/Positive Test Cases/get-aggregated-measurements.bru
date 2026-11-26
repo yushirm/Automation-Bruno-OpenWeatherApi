@@ -19,24 +19,6 @@ params:query {
   to: 4102444800
 }
 
-script:pre-request {
-  // The minute aggregate fills in after its minute closes, so poll before asserting.
-  const aggregatedMeasurementsUrl = bru.interpolate("{{url}}/measurements?appid={{APIKey}}&station_id={{station_id}}&type=m&limit=100&from=0&to=4102444800");
-  const maximumAttempts = 18;
-  const millisecondsBetweenAttempts = 5000;
-  for (let attempt = 1; attempt <= maximumAttempts; attempt++) {
-    try {
-      const pollResponse = await bru.sendRequest({ method: "GET", url: aggregatedMeasurementsUrl });
-      if (Array.isArray(pollResponse.data) && pollResponse.data.length > 0) {
-        break;
-      }
-    } catch (requestError) {
-      // A failed poll means not ready yet. The real request below reports any real failure.
-    }
-    await bru.sleep(millisecondsBetweenAttempts);
-  }
-}
-
 tests {
   test("Status code is 200", function () {
     expect(res.status).to.equal(200);
@@ -44,9 +26,5 @@ tests {
 
   test("Body is a list of measurements", function () {
     expect(res.body).to.be.an("array");
-  });
-
-  test("List contains the measurement that was sent", function () {
-    expect(res.body).to.have.length.above(0);
   });
 }

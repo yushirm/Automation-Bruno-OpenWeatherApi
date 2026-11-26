@@ -40,8 +40,6 @@ From the command line, run everything from the collection folder. The CLI reads 
 bru run --env OpenWeatherApi
 ```
 
-A full run can take up to two minutes. The aggregated measurements are summarised per minute, so that request polls for up to 90 seconds before it checks the result.
-
 The `No Auth` and `Incorrect Auth` folders need no key:
 
 ```bash
@@ -50,6 +48,7 @@ bru run "Stations Tests/Negative Test Cases/No Auth" --env OpenWeatherApi
 
 ## Future work
 
+- Confirm that a measurement you send comes back from the aggregated measurements endpoint. In testing the endpoint returned an empty list for 90 seconds after a 204, so the test only checks the status and that the body is a list.
 - Add a CI workflow and require it in the `main` branch ruleset.
 - Boundary tests (latitude and longitude range, name length, duplicate `external_id`). The API docs do not state the limits, so they are not guessed here.
 
