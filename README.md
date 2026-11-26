@@ -60,6 +60,10 @@ bru run "Stations Tests/Negative Test Cases/No Auth" --env OpenWeatherApi
 
 - [Bruno](https://www.usebruno.com/)
 
+## License
+
+MIT, see [LICENSE](LICENSE).
+
 ## Authors
 
 - [yushirm](https://www.linkedin.com/in/yushir-rugnath-maharaj-44b86222/) - Initial design and coding
