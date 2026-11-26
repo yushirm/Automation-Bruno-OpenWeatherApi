@@ -40,6 +40,8 @@ From the command line, run everything from the collection folder. The CLI reads 
 bru run --env OpenWeatherApi
 ```
 
+A full run can take up to two minutes. The aggregated measurements are summarised per minute, so that request polls for up to 90 seconds before it checks the result.
+
 The `No Auth` and `Incorrect Auth` folders need no key:
 
 ```bash
